@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import CardCharacter from "./CardCharacter";
 
 function App() {
   const [character, setCharacter] = useState(null);
@@ -19,10 +20,7 @@ function App() {
   return (
     <>
       {character ? (
-        <div>
-          <h1>{character.name}</h1>
-          <img src={character.image} />
-        </div>
+        <CardCharacter character={character} setCharacter={setCharacter}/>
       ) : (
         <p>No hay personaje para mostrar.</p>
       )}
