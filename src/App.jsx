@@ -1,30 +1,26 @@
 import { useState } from "react";
-import "./App.css";
-import CardCharacter from "./CardCharacter";
+import ButtonIncrement from "./ButtonIncrement";
+import ButtonDecrement from "./ButtonDecrement";
+import ButtonUpdateNumberState from "./ButtonUpdateNumberState";
 
 function App() {
-  const [character, setCharacter] = useState(null);
-  console.log(character);
-  const handleGetCharacter = () => {
-  
-    fetch(`https://rickandmortyapi.com/api/character/${Math.floor((Math.random() * 100))}`)
-      .then((response) => response.json())
-      .then((response) =>
-        setCharacter({
-          id: response.id,
-          name: response.name,
-          image: response.image,
-        })
-      );
-  };
+  const [number, setNumber] = useState(0);
+
   return (
     <>
-      {character ? (
-        <CardCharacter character={character} setCharacter={setCharacter}/>
-      ) : (
-        <p>No hay personaje para mostrar.</p>
-      )}
-      <button onClick={handleGetCharacter}>Get Character</button>
+      <ButtonIncrement number={number} setNumber={setNumber} />
+      <ButtonDecrement number={number} setNumber={setNumber} />
+      <br />
+      <ButtonUpdateNumberState
+        number={number}
+        setNumber={setNumber}
+        typeButton={"increment"}
+      />
+      <ButtonUpdateNumberState
+        number={number}
+        setNumber={setNumber}
+        typeButton={"decrement"}
+      />
     </>
   );
 }
