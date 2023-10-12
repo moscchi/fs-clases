@@ -1,0 +1,18 @@
+.navbar {
+    width: 100%;
+    background-color: darkblue;
+    padding: 2px;
+}
+
+.navbar-list {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    
+}
+
+.navbar-list a, li {
+    color: lightcyan;
+    
+    text-decoration: none; 
+}
