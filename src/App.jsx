@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import ProductList from "./components/ProductList";
-import ProductForm from "./components/ProductForm";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { CartProvider } from "./context/CartContext";
+import Header from "./components/Header";
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -30,12 +33,18 @@ const App = () => {
 
   return (
     <>
-      <ProductForm fetchData={fetchProductsData}/>
-      {products.length > 0 ? (
-        <ProductList products={products} />
-      ) : (
-        <p>No hay productos para mostrar</p>
-      )}
+      <CartProvider>
+        <Header fetchProductsData={fetchProductsData}/>
+        {products.length > 0 ? (
+          <ProductList
+            products={products}
+            fetchProductsData={fetchProductsData}
+          />
+        ) : (
+          <p>No hay productos para mostrar</p>
+        )}
+        <ToastContainer />
+      </CartProvider>
     </>
   );
 };

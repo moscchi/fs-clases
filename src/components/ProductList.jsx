@@ -1,17 +1,19 @@
 import ProductCard from "./ProductCard";
 
-/* eslint-disable react/prop-types */
-const ProductList = ({ products }) => {
+const ProductList = ({ products, fetchProductsData }) => {
   return (
-    <div>
-      <ul>
+    <>
+      <h2>Lista de productos:</h2>
+      <div className="product-list">
         {products.map((product) => (
-          <li key={product.id}>
-            <ProductCard product={product} />
-          </li>
+          <ProductCard
+            key={product.id}
+            product={product}
+            fetchProductsData={fetchProductsData}
+          />
         ))}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 };
 

@@ -1,8 +1,7 @@
-/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { productFormDictionary } from "../utils/productFormDictionary";
-import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+
 
 const ProductForm = ({fetchData}) => {
   const [productFormValues, setProductFormValues] = useState({
@@ -86,7 +85,6 @@ const ProductForm = ({fetchData}) => {
         }
       />
       <button onClick={handleSubmitForm}>Agregar Producto</button>
-      <ToastContainer />
     </div>
   );
 };
