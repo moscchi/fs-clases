@@ -5,12 +5,13 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CartProvider } from "./context/CartContext";
 import Header from "./components/Header";
+import InformativeModal from "./components/InformativeModal";
 
 const App = () => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isOpen, setIsOpen] = useState(true)
   useEffect(() => {
     fetchProductsData();
   }, []);
@@ -44,6 +45,7 @@ const App = () => {
           <p>No hay productos para mostrar</p>
         )}
         <ToastContainer />
+        <InformativeModal isOpen={isOpen} setIsOpen={setIsOpen} title={"Modal en app."} description={'Bienvenido a la pagina que acabamos de crear.'}/>
       </CartProvider>
     </>
   );

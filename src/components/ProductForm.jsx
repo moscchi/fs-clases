@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { productFormDictionary } from "../utils/productFormDictionary";
 import { toast } from "react-toastify";
+import BasicModal from "./BasicModal";
 
-
-const ProductForm = ({fetchData}) => {
+const ProductForm = ({ fetchData }) => {
   const [productFormValues, setProductFormValues] = useState({
     name: "",
     description: "",
     price: 0,
   });
+  const [openModal, setOpenModal] = useState(false)
   const handleUpdateProductFormValues = (value, inputReference) => {
     if (inputReference === productFormDictionary.NAME) {
       setProductFormValues((prevState) => ({ ...prevState, name: value }));
@@ -38,54 +39,57 @@ const ProductForm = ({fetchData}) => {
       );
 
       if (!response.ok) {
-        throw new Error('Error al agregar un producto.')
+        throw new Error("Error al agregar un producto.");
       }
       try {
-        await fetchData()
+        await fetchData();
       } catch (error) {
-        toast.error('Error al actualizar los datos.')
+        toast.error("Error al actualizar los datos.");
       }
-      toast.success('Producto Agregado con éxito.')
+      toast.success("Producto Agregado con éxito.");
     } catch (error) {
-        toast.error('Error al agregar un producto.')
-      
+      toast.error("Error al agregar un producto.");
     }
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder={"Name"}
-        onChange={(e) =>
-          handleUpdateProductFormValues(
-            e.target.value,
-            productFormDictionary.NAME
-          )
-        }
-      />
-      <input
-        type="text"
-        placeholder={"Description"}
-        onChange={(e) =>
-          handleUpdateProductFormValues(
-            e.target.value,
-            productFormDictionary.DESCRIPTION
-          )
-        }
-      />
-      <input
-        type="number"
-        placeholder={"Price"}
-        onChange={(e) =>
-          handleUpdateProductFormValues(
-            e.target.value,
-            productFormDictionary.PRICE
-          )
-        }
-      />
-      <button onClick={handleSubmitForm}>Agregar Producto</button>
-    </div>
+    <>
+      <div>
+        <input
+          type="text"
+          placeholder={"Name"}
+          onChange={(e) =>
+            handleUpdateProductFormValues(
+              e.target.value,
+              productFormDictionary.NAME
+            )
+          }
+        />
+        <input
+          type="text"
+          placeholder={"Description"}
+          onChange={(e) =>
+            handleUpdateProductFormValues(
+              e.target.value,
+              productFormDictionary.DESCRIPTION
+            )
+          }
+        />
+        <input
+          type="number"
+          placeholder={"Price"}
+          onChange={(e) =>
+            handleUpdateProductFormValues(
+              e.target.value,
+              productFormDictionary.PRICE
+            )
+          }
+        />
+        <button onClick={handleSubmitForm}>Agregar Producto</button>
+        <button onClick={() => setOpenModal(true)}>Abrir modal</button>
+      </div>
+      <BasicModal isOpen={openModal} setIsOpen={setOpenModal} title={"Modal ProductForm"}/>
+    </>
   );
 };
 
