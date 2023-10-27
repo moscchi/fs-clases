@@ -1,0 +1,11 @@
+[
+    {"dia": 1, "gasto": 300},
+    {"dia": 1, "gasto": 300},
+    {"dia": 2, "gasto": 500},
+    {"dia": 4, "gasto": 600},
+    {"dia": 5, "gasto": 11300},
+    {"dia": 6, "gasto": 100},
+    {"dia": 7, "gasto": 100},
+    {"dia": 7, "gasto": 200},
+    {"dia": 7, "gasto": 500}
+]
