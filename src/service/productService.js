@@ -1,12 +1,14 @@
 import { writeFile } from "fs/promises";
 import readDatabase from "../utils/readDatabase.js";
 import { __dirname } from "../db/databaseDir.js";
+
 const getProductsService = async () => {
   try {
     const products = await readDatabase();
     return products;
   } catch (error) {
     console.log(error);
+    throw new Error('Internal server error')
   }
 };
 
@@ -15,10 +17,10 @@ const getProductByIdService = async (request) => {
     const id = Number(request.params.id);
     const products = await readDatabase();
     const product = products.find((product) => product.id === id);
-    if (!product) return { message: "Product not found" };
-    return product;
+    return product
   } catch (error) {
     console.log(error);
+    throw new Error('Internal Server Error');
   }
 };
 
@@ -45,7 +47,7 @@ const updateProductService = async (request) => {
       (product) => product.id !== id
     );
     if (products.length === productsWithoutUpdateProduct.length)
-      return { message: "Product not found" };
+      return undefined;
 
     updateProduct.id = id;
     productsWithoutUpdateProduct.push(updateProduct);
@@ -53,9 +55,10 @@ const updateProductService = async (request) => {
     const stringProducts = JSON.stringify(productsWithoutUpdateProduct);
     await writeFile(__dirname + "/database.txt", stringProducts, "utf-8");
 
-    return { message: "Producto actualizado." };
+    return { message: "Product update successfully." };
   } catch (error) {
     console.error(error);
+    throw new Error('Internal Server Error');
   }
 };
 
