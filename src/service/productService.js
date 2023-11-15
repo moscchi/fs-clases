@@ -1,37 +1,49 @@
 import { writeFile } from "fs/promises";
 import readDatabase from "../utils/readDatabase.js";
-import { __dirname } from "../db/databaseDir.js";
+import ProductModel from "../models/products.models.js";
 
 const getProductsService = async () => {
   try {
-    const products = await readDatabase();
+    const products = await ProductModel.find();
     return products;
   } catch (error) {
     console.log(error);
-    throw new Error('Internal server error')
+    throw new Error("Internal server error");
   }
 };
 
 const getProductByIdService = async (request) => {
   try {
-    const id = Number(request.params.id);
-    const products = await readDatabase();
-    const product = products.find((product) => product.id === id);
-    return product
+    const id = request.params.id;
+    const product = await ProductModel.findOne({ _id: id });
+
+    return product;
   } catch (error) {
     console.log(error);
-    throw new Error('Internal Server Error');
+    throw new Error("Internal Server Error");
   }
 };
+const getProductByNameService = async (request) => {
+  try {
+    const name = request.params.name;
+    const product = await ProductModel.findOne({ name: name });
 
+    return product;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Internal Server Error");
+  }
+};
 const createProductService = async (request) => {
   try {
     const newProduct = request.body;
-    const productsParsed = await readDatabase();
-    productsParsed.push(newProduct);
-
-    const stringProducts = JSON.stringify(productsParsed);
-    await writeFile(__dirname + "/database.txt", stringProducts, "utf-8");
+    const newProductToDB = new ProductModel({
+      name: newProduct.name,
+      price: newProduct.price,
+      description: newProduct.description,
+      stock: newProduct.stock,
+    });
+    await newProductToDB.save();
     return { message: "Producto agregado con éxito." };
   } catch (error) {
     console.error(error);
@@ -39,44 +51,28 @@ const createProductService = async (request) => {
 };
 
 const updateProductService = async (request) => {
-  const id = Number(request.params.id);
   try {
+    const id = request.params.id;
     const updateProduct = request.body;
-    const products = await readDatabase();
-    const productsWithoutUpdateProduct = products.filter(
-      (product) => product.id !== id
-    );
-    if (products.length === productsWithoutUpdateProduct.length)
-      return undefined;
-
-    updateProduct.id = id;
-    productsWithoutUpdateProduct.push(updateProduct);
-
-    const stringProducts = JSON.stringify(productsWithoutUpdateProduct);
-    await writeFile(__dirname + "/database.txt", stringProducts, "utf-8");
-
-    return { message: "Product update successfully." };
+    const product = await ProductModel.findOneAndUpdate({_id: id}, updateProduct)
+    if(!product) return undefined
+    return product
   } catch (error) {
     console.error(error);
-    throw new Error('Internal Server Error');
+    throw new Error("Internal Server Error");
   }
 };
 
 const deleteProductService = async (request) => {
-  const id = Number(request.params.id);
   try {
-    const products = await readDatabase();
-    const productsWithoutUpdateProduct = products.filter(
-      (product) => product.id !== id
-    );
-    if (products.length === productsWithoutUpdateProduct.length)
-      return response.json({ message: "Product not found" });
+    const id = request.params.id;
+    const deleteProduct = await ProductModel.deleteOne({_id: id})
+    if(deleteProduct.deletedCount === 0) return undefined;
 
-    const stringProducts = JSON.stringify(productsWithoutUpdateProduct);
-    await writeFile(__dirname + "/database.txt", stringProducts, "utf-8");
-    return { message: "Producto eliminado con éxito." };
+    return { message: 'Producto eliminado con exito.'}
   } catch (error) {
     console.error(error);
+    throw new Error("Internal Server Error");
   }
 };
 export {
@@ -84,5 +80,6 @@ export {
   getProductByIdService,
   createProductService,
   updateProductService,
-  deleteProductService
+  deleteProductService,
+  getProductByNameService,
 };

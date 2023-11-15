@@ -3,7 +3,6 @@ const productBodyValidator = (request, response, next) => {
       const validationArray = [];
       if(typeof name !== "string") validationArray.push('Name must be string.')
       if(typeof description !== "string") validationArray.push('Description must be string.')
-      if(typeof image !== "string") validationArray.push('Image must be string.')
       if(typeof price !== "number") validationArray.push('Price must be number')
       if(price < 0) validationArray.push('Price must be a positive number')
       if(typeof stock !== "number") validationArray.push('Stock must be number')

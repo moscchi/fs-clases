@@ -5,17 +5,17 @@ import {
   createProductController,
   updateProductController,
   deleteProductController,
+  getProductByNameController,
 } from "../controller/productController.js";
 import productBodyValidator from "../utils/productBodyValidator.js";
-import paramValidatorNumber from "../utils/paramValidatorNumber.js";
 
 const router = express.Router();
 
 router.get("/product", getProductsController);
-router.get("/product/:id", paramValidatorNumber, getProductByIdController);
+router.get("/product/:id", getProductByIdController);
+router.get("/product-name/:name", getProductByNameController);
 router.put(
   "/product/:id",
-  paramValidatorNumber,
   productBodyValidator,
   updateProductController
 );
@@ -25,6 +25,6 @@ Con express validator: Recordar instalar la libreria e importar la validator fun
 router.post("/product", body('id').isEmpty().isNumeric(), body('name').isString(),
 body('price').isNumeric(). validator,  createProductController); */
 
-router.delete("/product/:id", paramValidatorNumber, deleteProductController);
+router.delete("/product/:id", deleteProductController);
 
 export default router;

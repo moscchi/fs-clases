@@ -2,6 +2,7 @@ import {
   createProductService,
   deleteProductService,
   getProductByIdService,
+  getProductByNameService,
   getProductsService,
   updateProductService,
 } from "../service/productService.js";
@@ -27,14 +28,22 @@ const getProductByIdController = async (request, response) => {
     
   }
 };
-
+const getProductByNameController = async (request, response) => {
+  try {
+    const product = await getProductByNameService(request);
+    if(!product) return response.status(404).json({message: "Product not found."})
+    response.json(product);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+    
+  }
+};
 const updateProductController = async (request, response) => {
   try {
     const updateProduct = await updateProductService(request);
     if(!updateProduct) 
       return response.status(404).json({message: "Product not found"});
-    
-    response.status(204).json(updateProduct);
+    response.status(204);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
@@ -46,8 +55,14 @@ const createProductController = async (request, response) => {
 };
 
 const deleteProductController = async (request, response) => {
-  const deleteProduct = await deleteProductService(request);
-  response.json(deleteProduct);
+  try {
+    const deleteProduct = await deleteProductService(request);
+    if(!deleteProduct) 
+      return response.status(404).json({message: "Product not found"});
+    response.json(deleteProduct);
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
 };
 export {
   getProductsController,
@@ -55,4 +70,5 @@ export {
   updateProductController,
   createProductController,
   deleteProductController,
+  getProductByNameController
 };
