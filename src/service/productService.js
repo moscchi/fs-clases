@@ -1,5 +1,3 @@
-import { writeFile } from "fs/promises";
-import readDatabase from "../utils/readDatabase.js";
 import ProductModel from "../models/products.models.js";
 
 const getProductsService = async () => {
