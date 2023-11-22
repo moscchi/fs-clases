@@ -10,10 +10,10 @@ const getProductsService = async () => {
   }
 };
 
-const getProductByIdService = async (request) => {
+const getProductByIdService = async (idProduct) => {
   try {
-    const id = request.params.id;
-    const product = await ProductModel.findOne({ _id: id });
+
+    const product = await ProductModel.findOne({ _id: idProduct });
 
     return product;
   } catch (error) {
