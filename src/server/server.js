@@ -1,11 +1,15 @@
 import express from 'express';
-import router from '../routes/productRoutes.js';
+import routesProduct from '../routes/productRoutes.js';
+import routesAuth from '../routes/authRoutes.js';
 import routeError from '../utils/routeError.js';
+import validateToken from '../utils/validateToken.js';
 
 const server = express();
 
 server.use(express.json());
-server.use(router);
+server.use(routesAuth);
+server.use(validateToken)
+server.use(routesProduct);
 
 server.use(routeError)
 export default server;
